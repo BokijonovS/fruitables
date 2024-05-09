@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>
+        {% block title %}
+            Fruitable
+        {% endblock title %}
+    </title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+
+    {% include 'components/_styles.html' %}
+
+</head>
+
+<body>
+
+<!-- Spinner Start -->
+{% include 'components/_spinner.html' %}
+<!-- Spinner End -->
+
+
+<!-- Navbar start -->
+{% include 'components/_navbar.html' %}
+<!-- Navbar End -->
+{% include 'components/_messages.html' %}
+
+
+<!-- Modal Search Start -->
+{% include 'components/_modal_search.html' %}
+<!-- Modal Search End -->
+
+
+{% block hero %}
+{% endblock hero %}
+
+
+{% block main %}
+{% endblock main %}
+
+<!-- Footer Start -->
+{% include 'components/_footer.html' %}
+<!-- Footer End -->
+
+
+<!-- Back to Top -->
+<a href="#" class="btn btn-primary border-3 border-primary rounded-circle back-to-top"><i
+        class="fa fa-arrow-up"></i></a>
+
+
+{% include 'components/_scripts.html' %}
+</body>
+
+</html>

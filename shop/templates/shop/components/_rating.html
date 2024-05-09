@@ -1,0 +1,34 @@
+<style>
+    .rating-list li {
+        float: right;
+        color: #ddd;
+        padding: 10px 5px;
+    }
+
+    .rating-list li:hover,
+    .rating-list li:hover ~ li {
+        color: orange;
+    }
+
+    .rating-list {
+        display: inline-block;
+        list-style: none;
+    }
+
+    .checked {
+        color: orange;
+    }
+</style>
+
+<ul class="list-inline rating-list">
+    <li onclick="rate(5, {{ product.id }})">
+        <i class="fa fa-star {% if product.user_rating > 4 %} checked {% endif %}" title="Rate 5"></i></li>
+    <li onclick="rate(4, {{ product.id }})">
+        <i class="fa fa-star {% if product.user_rating > 3 %} checked {% endif %}" title="Rate 4"></i></li>
+    <li onclick="rate(3, {{ product.id }})">
+        <i class="fa fa-star {% if product.user_rating > 2 %} checked {% endif %}" title="Rate 3"></i></li>
+    <li onclick="rate(2, {{ product.id }})">
+        <i class="fa fa-star {% if product.user_rating > 1 %} checked {% endif %}" title="Rate 2"></i></li>
+    <li onclick="rate(1, {{ product.id }})">
+        <i class="fa fa-star {% if product.user_rating > 0 %} checked {% endif %}" title="Rate 1"></i></li>
+</ul>
