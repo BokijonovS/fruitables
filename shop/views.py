@@ -4,8 +4,8 @@ from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, redirect
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
-from .forms import RegisterForm, LoginForm
-from .models import Category, Product, Rating
+from .forms import RegisterForm, LoginForm, ReviewForm
+from .models import Category, Product, Rating, Review
 
 
 # Create your views here.
@@ -23,11 +23,25 @@ class ProductList(ListView):
         'page_name': "Shop"
     }
 
+    def get_queryset(self):
+        return Product.objects.filter(discount=0)
+
 
 
 # shop page
 class AllProductList(ProductList):
     template_name = 'shop/all_products.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        products = Product.objects.exclude(discount=0).order_by('-discount')[:3]
+        context['sale_products'] = products
+        return context
+
+
+class ByDiscount(AllProductList):
+    def get_queryset(self):
+        return Product.objects.exclude(discount=0)
 
 
 # Category dealer
@@ -41,14 +55,17 @@ def all_products_by_category(request, category_slug):
 # Product detail page
 def detail(request, slug):
     product = Product.objects.get(slug=slug)
-    rating = Rating.objects.filter(product=product, user=request.user).first()
-    product.user_rating = rating.rating if rating else 0
 
     context = {
         'product': product,
         'page_name': 'Shop Detail',
         'categories': Category.objects.all(),
+        'products': Product.objects.exclude(discount=0).order_by('-discount')[:6]
     }
+    if request.user.is_authenticated:
+        rating = Rating.objects.filter(product=product, user=request.user).first()
+        context['user_rating'] = rating.rating if rating else 0
+        context['reviews'] = Review.objects.filter(product=product)
     return render(request, 'shop/product_detail.html', context=context)
 
 
@@ -99,6 +116,19 @@ def user_register(request):
     }
     return render(request, 'shop/register.html', context)
 
+
+def save_review(request: HttpRequest, product_slug):
+    form = ReviewForm(data=request.POST)
+    if request.user.is_authenticated:
+        if form.is_valid():
+            product = Product.objects.get(slug=product_slug)
+            review = form.save(commit=False)
+            review.product = product
+            review.author = request.user
+            review.save()
+        return redirect('detail', slug=product_slug)
+    else:
+        return redirect('login')
 
 
 

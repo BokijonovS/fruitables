@@ -10,4 +10,7 @@ urlpatterns = [
     path('login/', user_login, name='login'),
     path('logout/', user_logout, name='logout'),
     path('register/', user_register, name='register'),
+    path('save-review/<slug:product_slug>/', save_review, name='save_review'),
+    path('discounts/', ByDiscount.as_view(), name='discounts'),
+
 ]

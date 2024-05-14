@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
+from .models import Review
 
 
 class LoginForm(AuthenticationForm):
@@ -35,3 +36,8 @@ class RegisterForm(UserCreationForm):
     class Meta:
         model = User
         fields = ['username', 'email']
+
+class ReviewForm(forms.ModelForm):
+    class Meta:
+        model = Review
+        fields = ['name', 'email', 'text']
