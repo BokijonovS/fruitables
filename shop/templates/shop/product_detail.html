@@ -43,7 +43,7 @@
                                     </button>
                                 </div>
                             </div>
-                            <a href="#" class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary"><i
+                            <a href="{% url 'to_cart' product.id 'add' %}" class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary"><i
                                     class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
                         </div>
                         <div class="col-lg-12">
@@ -255,7 +255,7 @@
                                 <p>{{ product.description|linebreaks }}</p>
                                 <div class="d-flex justify-content-between flex-lg-wrap">
                                     <p class="text-dark fs-5 fw-bold">$4.99 / kg</p>
-                                    <a href="#"
+                                    <a href="{% url 'to_cart' product.id 'add' %}"
                                        class="btn border border-secondary rounded-pill px-3 py-1 mb-4 text-primary"><i
                                             class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
                                 </div>

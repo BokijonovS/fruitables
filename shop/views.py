@@ -4,8 +4,10 @@ from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, redirect
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
+
 from .forms import RegisterForm, LoginForm, ReviewForm
 from .models import Category, Product, Rating, Review
+from .utils import CartAuthenticatedUser
 
 
 # Create your views here.
@@ -127,6 +129,43 @@ def save_review(request: HttpRequest, product_slug):
             review.author = request.user
             review.save()
         return redirect('detail', slug=product_slug)
+    else:
+        return redirect('login')
+
+
+
+def cart(request):
+    if request.user.is_authenticated:
+        cart_info = CartAuthenticatedUser(request).get_cart_info()
+        context = {
+            'order_products': cart_info['order_products'],
+            'cart_total_price': cart_info['cart_total_price'],
+            'page_name': 'Cart',
+        }
+        return render(request, 'shop/cart.html', context)
+    else:
+        return redirect('login')
+
+
+def to_cart(request, product_id, action):
+    if request.user.is_authenticated:
+        CartAuthenticatedUser(request, product_id, action)
+        page = request.META.get('HTTP_REFERER')
+        return redirect(page)
+    else:
+        return redirect('login')
+
+
+
+def checkout(request):
+    if request.user.is_authenticated:
+        cart_info = CartAuthenticatedUser(request).get_cart_info()
+        context = {
+            'order_products': cart_info['order_products'],
+            'cart_total_price': cart_info['cart_total_price'],
+            'page_name': 'Checkout',
+        }
+        return render(request, 'shop/checkout.html', context)
     else:
         return redirect('login')
 

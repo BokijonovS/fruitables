@@ -12,5 +12,8 @@ urlpatterns = [
     path('register/', user_register, name='register'),
     path('save-review/<slug:product_slug>/', save_review, name='save_review'),
     path('discounts/', ByDiscount.as_view(), name='discounts'),
+    path('cart/', cart, name='cart'),
+    path('to-cart/<int:product_id>/<str:action>', to_cart, name='to_cart'),
+    path('checkout/', checkout, name='checkout'),
 
 ]
